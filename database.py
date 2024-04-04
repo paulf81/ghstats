@@ -6,7 +6,7 @@ import pandas as pd
 
 # database connection
 import models as mod
-from models import Stats, StatsNRELFloris, StatswfcTools
+from models import Stats, StatsNRELFloris, StatsNRELFlasc, StatsNRELHercules, StatsNRELWHOC, StatsNRELmoa_python
 from sqlalchemy.orm import sessionmaker
 
 
@@ -43,8 +43,14 @@ class Database(object):
             repo_class = Stats
         elif repo_code is 'nrel_floris':
             repo_class = StatsNRELFloris
-        elif repo_code is 'wfc_tools':
-            repo_class = StatswfcTools
+        elif repo_code is 'nrel_flasc':
+            repo_class = StatsNRELFlasc
+        elif repo_code is 'nrel_hercules':
+            repo_class = StatsNRELHercules
+        elif repo_code is 'nrel_whoc':
+            repo_class = StatsNRELWHOC
+        elif repo_code is 'nrel_moa_python':
+            repo_class = StatsNRELmoa_python
 
 
         for record in records:
@@ -68,8 +74,14 @@ class Database(object):
             repo_class = Stats
         elif repo_code is 'nrel_floris':
             repo_class = StatsNRELFloris
-        elif repo_code is 'wfc_tools':
-            repo_class = StatswfcTools
+        elif repo_code is 'nrel_flasc':
+            repo_class = StatsNRELFlasc
+        elif repo_code is 'nrel_hercules':
+            repo_class = StatsNRELHercules
+        elif repo_code is 'nrel_whoc':
+            repo_class = StatsNRELWHOC
+        elif repo_code is 'nrel_moa_python':
+            repo_class = StatsNRELmoa_python
 
         for record in records:
             print(record)
@@ -93,8 +105,14 @@ class Database(object):
             repo_class = Stats
         elif repo_code is 'nrel_floris':
             repo_class = StatsNRELFloris
-        elif repo_code is 'wfc_tools':
-            repo_class = StatswfcTools
+        elif repo_code is 'nrel_flasc':
+            repo_class = StatsNRELFlasc
+        elif repo_code is 'nrel_hercules':
+            repo_class = StatsNRELHercules
+        elif repo_code is 'nrel_whoc':
+            repo_class = StatsNRELWHOC
+        elif repo_code is 'nrel_moa_python':
+            repo_class = StatsNRELmoa_python
 
         if from_date is None:
             stat = self.session.query(repo_class).order_by(repo_class.timestamp).first()
@@ -120,5 +138,8 @@ class Database(object):
         print("GETTING TOTAL UNIQUE VIEWS AND CLONES")
         results_wisdem = pd.read_sql_query("Select sum(clones_uniques) as total_unique_clones, sum(views_uniques) as total_unique_views, min(timestamp) as from_date, max(timestamp) as to_date from  stats;", self.engine)
         results_floris = pd.read_sql_query("Select sum(clones_uniques) as total_unique_clones, sum(views_uniques) as total_unique_views, min(timestamp) as from_date, max(timestamp) as to_date from  statsnrelfloris;", self.engine)
-        results_wfctools = pd.read_sql_query("Select sum(clones_uniques) as total_unique_clones, sum(views_uniques) as total_unique_views, min(timestamp) as from_date, max(timestamp) as to_date from  statswfctools;", self.engine)
-        return results_wisdem, results_floris, results_wfctools
+        results_flasc = pd.read_sql_query("Select sum(clones_uniques) as total_unique_clones, sum(views_uniques) as total_unique_views, min(timestamp) as from_date, max(timestamp) as to_date from  statsnrelflasc;", self.engine)
+        results_hercules = pd.read_sql_query("Select sum(clones_uniques) as total_unique_clones, sum(views_uniques) as total_unique_views, min(timestamp) as from_date, max(timestamp) as to_date from  statsnrelhercules;", self.engine)
+        results_whoc = pd.read_sql_query("Select sum(clones_uniques) as total_unique_clones, sum(views_uniques) as total_unique_views, min(timestamp) as from_date, max(timestamp) as to_date from  statsnrelwhoc;", self.engine)
+        results_moa_python = pd.read_sql_query("Select sum(clones_uniques) as total_unique_clones, sum(views_uniques) as total_unique_views, min(timestamp) as from_date, max(timestamp) as to_date from  statsnrelmoa_python;", self.engine)
+        return results_wisdem, results_floris, results_flasc, results_hercules, results_whoc, results_moa_python
